@@ -12,6 +12,10 @@ import Admin from './pages/admin/Admin'
 import UserList from './pages/admin/user/UserList'
 import UserView from './pages/admin/user/UserView'
 import UserEdit from './pages/admin/user/UserEdit'
+import CategoryList from './pages/admin/category/CategoryList'
+import { NotFound } from './pages/NotFound'
+import CategoryEdit from './pages/admin/category/CategoryEdit'
+import CategoryAdd from './pages/admin/category/CategoryAdd'
 
 function App() {
     const [user, setUser] = useState<Me | null>(null);
@@ -35,6 +39,7 @@ function App() {
         <UserContext.Provider value={{ user, setUser }}>
             <BrowserRouter>
                 <Routes>
+                    <Route path='*' element={<NotFound></NotFound>}></Route>
                     <Route path='/' element={<BaseLayout />}>
                         <Route index element={<Index />}></Route>
                         <Route path='auth/signin' element={<Signin />}></Route>
@@ -43,6 +48,9 @@ function App() {
                             <Route path='user' element={<UserList />}></Route>
                             <Route path='user/:id' element={<UserView />}></Route>
                             <Route path='user/:id/edit' element={<UserEdit />}></Route>
+                            <Route path='category' element={<CategoryList />}></Route>
+                            <Route path='category/:id' element={<CategoryEdit />}></Route>
+                            <Route path='category/add' element={<CategoryAdd />}></Route>
                         </Route>
                     </Route>
 

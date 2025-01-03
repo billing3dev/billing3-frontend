@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { getUser, User, UserEdit as ApiUserEdit, updateUser } from "../../../api/admin-user";
-import Loading from "../../../components/Loading";
+import { getUser, UserEdit as ApiUserEdit, updateUser } from "../../../api/admin-user";
 import LoadingError from "../../../components/LoadingError";
 import Input from "../../../components/Input";
 import Select from "../../../components/Select";
 import Button from "../../../components/Button";
+import Stack from "../../../components/Stack";
 
 export default function UserEdit() {
     const navigate = useNavigate();
@@ -53,7 +53,7 @@ export default function UserEdit() {
         <LoadingError className="mt-3" loading={loading} error={error} />
 
         {
-            user && <div className="mt-3 flex flex-col gap-3">
+            user && <Stack className="mt-3">
                 <Input label="Name" value={user.name} onChange={v => setUser({ ...user, name: v })} className="w-full"></Input>
                 <Input label="Email" value={user.email} onChange={v => setUser({ ...user, email: v })} className="w-full"></Input>
                 <Input label="Password" value={user.password} onChange={v => setUser({ ...user, password: v })} type="password" className="w-full" helperText="Leave this field empty if you don't wnat to change password."></Input>
@@ -67,7 +67,7 @@ export default function UserEdit() {
                 <Input label="Country" value={user.country || ""} onChange={v => setUser({ ...user, country: v })} className="w-full"></Input>
                 <Input label="Zip code" value={user.zip_code || ""} onChange={v => setUser({ ...user, zip_code: v })} className="w-full"></Input>
                 <Button onClick={onSubmit}>Save</Button>
-            </div>
+            </Stack>
         }
     </>
 }
