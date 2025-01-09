@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode, useEffect, useRef } from "react"
 
 
 interface IProps {
@@ -11,17 +11,26 @@ interface IProps {
     helperText?: string
 }
 
-export default function Select(props: IProps) {
+export default function Select({disabled, className, value, onChange, children, label, helperText}: IProps) {
+    const ref = useRef<HTMLSelectElement>(null);
+
+    useEffect(() => {
+        if (ref.current !== null && ref.current.value !== value && onChange) {
+            onChange(ref.current.value);
+        }
+    }, [ref, value, onChange]);
+
     return <div className="flex flex-col">
-        {props.label && <label className="mb-1">{props.label}</label>}
+        {label && <label className="mb-1">{label}</label>}
         <select
-            className={"dark:[color-scheme:dark] rounded bg-surface border-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent " + (props.className || "")}
-            value={props.value}
-            onChange={e => props.onChange && props.onChange(e.target.value)}
-            disabled={props.disabled === true}
+            ref={ref}
+            className={"dark:[color-scheme:dark] rounded bg-surface border-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent " + (className || "")}
+            value={value}
+            onChange={e => onChange && onChange(e.target.value)}
+            disabled={disabled === true}
         >
-            {props.children}
+            {children}
         </select>
-        {props.helperText && <span className="text-sm text-on-surface2">{props.helperText}</span>}
+        {helperText && <span className="text-sm text-on-surface2">{helperText}</span>}
     </div>
 }

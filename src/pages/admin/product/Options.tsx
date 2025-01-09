@@ -10,7 +10,6 @@ import Td from "../../../components/Td"
 import Th from "../../../components/Th"
 import Tbody from "../../../components/Tbody"
 import Button from "../../../components/Button"
-import Dialog from "../../../components/Dialog"
 import { useState } from "react"
 
 interface IProps {
@@ -19,8 +18,8 @@ interface IProps {
 }
 
 export default function Options({ onChange, product }: IProps) {
-    const [valuesDialog, setValuesDialog] = useState(-1);
-    const [valuePricingDialog, setValuePricingDialog] = useState(-1);
+    const [option, setOption] = useState(-1);
+    const [optionPricing, setOptionPricing] = useState(-1);
 
     function onDisplayNameChange(index: number, value: string) {
         const cloned = cloneDeep(product);
@@ -67,52 +66,151 @@ export default function Options({ onChange, product }: IProps) {
         onChange(cloned);
     }
 
-    function onValuesClicked(index: number) {
-        setValuesDialog(index);
-    }
-
     function onAddValue() {
-        if (valuesDialog < 0) return;
+        if (option < 0) return;
         const cloned = cloneDeep(product);
-        cloned.options[valuesDialog].values.push({
+        cloned.options[option].values.push({
             display_name: "",
             value: "",
             prices: []
+        })
+        onChange(cloned);
+    }
+
+    function onValueChange(index: number, v: string) {
+        if (option < 0) return;
+        const cloned = cloneDeep(product);
+        cloned.options[option].values[index].value = v;
+        onChange(cloned);
+    }
+
+    function onValueDisplayNameChange(index: number, v: string) {
+        if (option < 0) return;
+        const cloned = cloneDeep(product);
+        cloned.options[option].values[index].display_name = v;
+        onChange(cloned);
+    }
+
+    function onValueDelete(index: number) {
+        if (option < 0) return;
+        const cloned = cloneDeep(product);
+        cloned.options[option].values.splice(index, 1);
+        onChange(cloned);
+    }
+
+    function onAddValuePricing() {
+        if (option < 0 || optionPricing < 0) return;
+        const cloned = cloneDeep(product);
+        cloned.options[option].values[optionPricing].prices.push({
+            duration: 0,
+            price: "",
+            setup_fee: ""
         });
         onChange(cloned);
     }
 
-    return <>
-        <Dialog title="Value Pricing" open={valuePricingDialog >= 0 && valuesDialog >= 0} onClose={() => setValuePricingDialog(-1)}>
-            Value pricing
-        </Dialog>
+    function onValuePricingDurationChange(index: number, value: number) {
+        if (option < 0 || optionPricing < 0) return;
+        const cloned = cloneDeep(product);
+        cloned.options[option].values[optionPricing].prices[index].duration = value;
+        onChange(cloned);
+    }
 
-        <Dialog title="Values" open={valuesDialog >= 0} onClose={() => setValuesDialog(-1)}>
-            <Button onClick={onAddValue}>Add</Button>
-            <Table className="outline outline-outline">
+    function onValuePricingChange(index: number, value: string) {
+        if (option < 0 || optionPricing < 0) return;
+        const cloned = cloneDeep(product);
+        cloned.options[option].values[optionPricing].prices[index].price = value;
+        onChange(cloned);
+    }
+
+    function onValuePricingSetupFeeChange(index: number, value: string) {
+        if (option < 0 || optionPricing < 0) return;
+        const cloned = cloneDeep(product);
+        cloned.options[option].values[optionPricing].prices[index].setup_fee = value;
+        onChange(cloned);
+    }
+
+    function onValuePricingDelete(index: number) {
+        if (option < 0 || optionPricing < 0) return;
+        const cloned = cloneDeep(product);
+        cloned.options[option].values[optionPricing].prices.splice(index, 1);
+        onChange(cloned);
+    }
+
+    if (optionPricing >= 0) {
+        return <Stack>
+            <div className="flex gap-2">
+                <button className="text-primary flex items-center font-bold" onClick={() => setOptionPricing(-1)}><span className="material-symbols-outlined">arrow_back</span>Go back</button>
+                <span>{product.options[option].values[optionPricing].display_name}</span>
+            </div>
+
+            <div><Button onClick={onAddValuePricing}>Add</Button></div>
+
+            <Table>
                 <Thead>
                     <Tr>
-                        <Th>Display Name</Th>
-                        <Th>Value</Th>
+                        <Th>Duration</Th>
                         <Th>Price</Th>
+                        <Th>Setup Fee</Th>
                         <Th>Action</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
                     {
-                        valuesDialog >= 0 && product.options[valuesDialog].values.map((value, index) => <Tr key={index}>
-                            <Td><Input value={value.display_name}></Input></Td>
-                            <Td><Input value={value.value}></Input></Td>
+                        product.options[option].values[optionPricing].prices.map((v, index) => <Tr key={index}>
+                            <Td>
+                                <Select value={v.duration.toString()} onChange={v => onValuePricingDurationChange(index, parseInt(v))}>
+                                    {product.pricing.map((p, i) => <option key={i} value={p.duration.toString()}>{p.display_name} ({p.duration} seconds)</option>)}
+                                </Select>
+                            </Td>
+                            <Td><Input value={v.price} onChange={v => onValuePricingChange(index, v)}></Input></Td>
+                            <Td><Input value={v.setup_fee} onChange={v => onValuePricingSetupFeeChange(index, v)}></Input></Td>
+                            <Td><button className="text-rose-500" onClick={() => onValuePricingDelete(index)}>Delete</button></Td>
                         </Tr>)
                     }
                 </Tbody>
             </Table>
-        </Dialog>
+        </Stack>
+    }
 
+    if (option >= 0) {
+        return <Stack>
+            <div className="flex gap-2">
+                <button className="text-primary flex items-center font-bold" onClick={() => setOption(-1)}><span className="material-symbols-outlined">arrow_back</span>Go back</button>
+                <span>{product.options[option].display_name}</span>
+            </div>
+
+            <div><Button onClick={onAddValue}>Add</Button></div>
+
+            <Table>
+                <Thead>
+                    <Tr>
+                        <Th>Value</Th>
+                        <Th>Display Name</Th>
+                        <Th>Prices</Th>
+                        <Th>Action</Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
+                    {
+                        product.options[option].values.map((v, index) => <Tr key={index}>
+                            <Td><Input value={v.value} onChange={v => onValueChange(index, v)}></Input></Td>
+                            <Td><Input value={v.display_name} onChange={v => onValueDisplayNameChange(index, v)}></Input></Td>
+                            <Td><Button onClick={() => setOptionPricing(index)}>Prices</Button></Td>
+                            <Td><button className="text-rose-500" onClick={() => onValueDelete(index)}>Delete</button></Td>
+                        </Tr>)
+                    }
+                </Tbody>
+            </Table>
+        </Stack>
+    }
+
+    return <>
         <Stack>
             <div>
                 <Button onClick={onAdd}>Add</Button>
             </div>
+
             <Table>
                 <Thead>
                     <Tr>
@@ -137,7 +235,7 @@ export default function Options({ onChange, product }: IProps) {
                                 </Select>
                             </Td>
                             <Td>
-                                {option.type === "select" && <Button onClick={() => onValuesClicked(index)}>Values</Button>}
+                                {option.type === "select" && <Button onClick={() => setOption(index)}>Values</Button>}
                                 {option.type !== "select" && <Input placeholder="regex validation" value={option.regex} onChange={e => onRegexChange(index, e)}></Input>}
                             </Td>
                             <Td>
