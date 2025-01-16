@@ -4,9 +4,10 @@ export default function Admin() {
     // url, title, icon
     const links = [
         ["/admin/user", "Users", "group"],
-        ["/admin/product", "Products", "package_2"],
-        ["/admin/service", "Services", "deployed_code"],
         ["/admin/category", "Product categories", "category"],
+        ["/admin/product", "Products", "package_2"],
+        ["/admin/invoice", "Invoices", "receipt"],
+        ["/admin/service", "Services", "deployed_code"],
         ["/admin/server", "Servers", "dns"],
         ["/admin/users", "Payment gateways", "credit_card"],
     ]

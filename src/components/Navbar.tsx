@@ -9,7 +9,7 @@ export default function Navbar() {
 
     let links = [
         { title: "Home", link: "/" },
-        { title: "Store", link: "/" },
+        { title: "Store", link: "/store" },
     ]
 
     if (user !== null && user.role === "admin") {

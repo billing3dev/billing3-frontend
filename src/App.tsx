@@ -12,13 +12,17 @@ import Admin from './pages/admin/Admin'
 import UserList from './pages/admin/user/UserList'
 import UserView from './pages/admin/user/UserView'
 import UserEdit from './pages/admin/user/UserEdit'
-import CategoryList from './pages/admin/category/CategoryList'
+import AdminCategoryList from './pages/admin/category/CategoryList'
+import CategoryList from './pages/store/CategoryList'
 import { NotFound } from './pages/NotFound'
 import CategoryEdit from './pages/admin/category/CategoryEdit'
 import CategoryAdd from './pages/admin/category/CategoryAdd'
-import ProductList from './pages/admin/product/ProductList'
+import AdminProductList from './pages/admin/product/ProductList'
 import ProductAdd from './pages/admin/product/ProductAdd'
 import ProductEdit from './pages/admin/product/ProductEdit'
+import InvoiceList from './pages/admin/invoice/InvoiceList'
+import ProductList from './pages/store/ProductList'
+import Order from './pages/store/Order'
 
 function App() {
     const [user, setUser] = useState<Me | null>(null);
@@ -45,7 +49,15 @@ function App() {
                     <Route path='*' element={<NotFound></NotFound>}></Route>
                     <Route path='/' element={<BaseLayout />}>
                         <Route index element={<Index />}></Route>
+
                         <Route path='auth/signin' element={<Signin />}></Route>
+
+                        <Route path="store">
+                            <Route index element={<CategoryList></CategoryList>}></Route>
+                            <Route path=':id' element={<ProductList></ProductList>}></Route>
+                            <Route path='product/:id' element={<Order></Order>}></Route>
+                        </Route>
+
                         <Route path='admin'>
                             <Route index element={<Admin />}></Route>
 
@@ -53,13 +65,16 @@ function App() {
                             <Route path='user/:id' element={<UserView />}></Route>
                             <Route path='user/:id/edit' element={<UserEdit />}></Route>
 
-                            <Route path='category' element={<CategoryList />}></Route>
+                            <Route path='category' element={<AdminCategoryList />}></Route>
                             <Route path='category/:id' element={<CategoryEdit />}></Route>
                             <Route path='category/add' element={<CategoryAdd />}></Route>
 
-                            <Route path='product' element={<ProductList />}></Route>
+                            <Route path='product' element={<AdminProductList />}></Route>
                             <Route path='product/add' element={<ProductAdd />}></Route>
                             <Route path='product/:id' element={<ProductEdit />}></Route>
+
+
+                            <Route path='invoice' element={<InvoiceList />}></Route>
                         </Route>
                     </Route>
 

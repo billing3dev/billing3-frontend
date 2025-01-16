@@ -12,6 +12,7 @@ import Delete from "../../../components/Delete";
 import Select from "../../../components/Select";
 import Button from "../../../components/Button";
 import { Category, getCategories } from "../../../api/admin-category";
+import { YesNo } from "../../../components/YesNo";
 
 
 export default function ProductList() {
@@ -89,7 +90,7 @@ export default function ProductList() {
             <Tbody>
                 {products.map((product) => <Tr key={product.id}>
                     <Td>{product.id}</Td>
-                    <Td>{product.enabled ? "True" : "False"}</Td>
+                    <Td><YesNo value={product.enabled}></YesNo></Td>
                     <Td>{product.name}</Td>
                     <Td>{product.category_name}</Td>
                     <Td>
