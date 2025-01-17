@@ -23,6 +23,7 @@ import ProductEdit from './pages/admin/product/ProductEdit'
 import InvoiceList from './pages/admin/invoice/InvoiceList'
 import ProductList from './pages/store/ProductList'
 import Order from './pages/store/Order'
+import InoivceEdit from './pages/admin/invoice/InvoiceEdit'
 
 function App() {
     const [user, setUser] = useState<Me | null>(null);
@@ -73,8 +74,8 @@ function App() {
                             <Route path='product/add' element={<ProductAdd />}></Route>
                             <Route path='product/:id' element={<ProductEdit />}></Route>
 
-
                             <Route path='invoice' element={<InvoiceList />}></Route>
+                            <Route path='invoice/:id' element={<InoivceEdit />}></Route>
                         </Route>
                     </Route>
 

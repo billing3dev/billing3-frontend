@@ -31,6 +31,6 @@ export default function Select({disabled, className, value, onChange, children, 
         >
             {children}
         </select>
-        {helperText && <span className="text-sm text-on-surface2">{helperText}</span>}
+        {helperText && <span className="text-sm mt-1 text-on-surface2">{helperText}</span>}
     </div>
 }

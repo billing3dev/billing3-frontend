@@ -8,6 +8,7 @@ import Th from "../../../components/Th";
 import Tbody from "../../../components/Tbody";
 import Td from "../../../components/Td";
 import Pagination from "../../../components/Pagination";
+import Select from "../../../components/Select";
 
 
 export default function InvoiceList() {
@@ -17,19 +18,16 @@ export default function InvoiceList() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [status, setStatus] = useState("");
-    const [userId, setUserId] = useState(0);
 
     function search(status: string, user_id: number, page: number) {
         setLoading(true);
         setError("");
         setTotalPages(1);
-        setPage(1);
         setInvoices([]);
 
         searchInvoices(status, user_id, page).then(({ invoices, total_pages }) => {
             setInvoices(invoices);
             setTotalPages(total_pages);
-            setPage(1);
         })
             .catch((error) => {
                 setError(error.message);
@@ -38,13 +36,27 @@ export default function InvoiceList() {
     }
 
     useEffect(() => {
-        search("", 0, 1);
-    }, []);
+        search(status, 0, page);
+    }, [status, page]);
+
+    useEffect(() => {
+        setPage(1);
+    }, [status]);
+
 
     return <>
         <h1 className="text-3xl font-bold">Invoices</h1>
 
         <LoadingError loading={loading} error={error} />
+        
+        <div className="mt-5 flex gap-2">
+            <Select value={status} onChange={e => setStatus(e)} className="w-50">
+                <option value="">All</option>
+                <option value="UNPAID">Unpaid</option>
+                <option value="PAID">Paid</option>
+                <option value="CANCELLED">Cancelled</option>
+            </Select>
+        </div>
 
         <Table className="mt-5">
             <Thead>
@@ -66,7 +78,7 @@ export default function InvoiceList() {
                         <Td>{invoice.amount}</Td>
                         <Td>{new Date(invoice.due_at * 1000).toLocaleString()}</Td>
                         <Td>
-                            <button className="text-blue-500">Edit</button>
+                            <a href={"/admin/invoice/" + invoice.id} className="text-blue-500">Edit</a>
                         </Td>
                     </Tr>)
                 }

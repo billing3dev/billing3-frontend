@@ -20,7 +20,7 @@ export default function UserList() {
     const [search, setSearch] = useState("");
     const [totalPages, setTotalPages] = useState(0);
 
-    const onSearch = useCallback(() => {
+    const onSearch = useCallback((search: string) => {
         setUsers([]);
         setLoading(true);
         setError("");
@@ -36,10 +36,10 @@ export default function UserList() {
             .finally(() => {
                 setLoading(false);
             });
-    }, [page, search]);
+    }, [page]);
 
     useEffect(() => {
-        onSearch();
+        onSearch("");
     }, [onSearch]);
 
     return <>
@@ -49,7 +49,7 @@ export default function UserList() {
 
         <div className="mt-5 flex gap-2">
             <Input placeholder="Serach" value={search} onChange={e => setSearch(e)}></Input>
-            <Button onClick={onSearch}>Search</Button>
+            <Button onClick={() => onSearch(search)}>Search</Button>
         </div>
 
         <Table className="mt-5">
