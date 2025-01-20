@@ -24,6 +24,9 @@ import InvoiceList from './pages/admin/invoice/InvoiceList'
 import ProductList from './pages/store/ProductList'
 import Order from './pages/store/Order'
 import InoivceEdit from './pages/admin/invoice/InvoiceEdit'
+import ServerList from './pages/admin/server/ServerList'
+import { ServerAdd } from './pages/admin/server/ServerAdd'
+import { ServerEdit } from './pages/admin/server/ServerEdit'
 
 function App() {
     const [user, setUser] = useState<Me | null>(null);
@@ -76,6 +79,10 @@ function App() {
 
                             <Route path='invoice' element={<InvoiceList />}></Route>
                             <Route path='invoice/:id' element={<InoivceEdit />}></Route>
+
+                            <Route path='server' element={<ServerList></ServerList>}></Route>
+                            <Route path='server/add' element={<ServerAdd />}></Route>
+                            <Route path='server/:id' element={<ServerEdit />}></Route>
                         </Route>
                     </Route>
 

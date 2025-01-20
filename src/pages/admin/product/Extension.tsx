@@ -6,6 +6,8 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import LoadingError from "../../../components/LoadingError"
 import Input from "../../../components/Input"
 import Textarea from "../../../components/Textarea"
+import MultiSelect from "../../../components/MultiSelect"
+import { getServers, Server } from "../../../api/admin-server"
 
 interface IProps {
     onChange: (product: ProductEdit) => void
@@ -18,6 +20,17 @@ export default function Extension({ onChange, product, extensions }: IProps) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string>("");
     const currentSettings = useRef<Record<string, string>>({});
+    const [servers, setServers] = useState<Server[]>([]);
+
+    useEffect(() => {
+        setLoading(true);
+        setError("");
+        setServers([]);
+        getServers()
+            .then((data) => setServers(data))
+            .catch((error) => setError(error.message))
+            .finally(() => setLoading(false));
+    }, [])
 
     function onExtensionChange(v: string) {
         const cloned = cloneDeep(product);
@@ -80,6 +93,17 @@ export default function Extension({ onChange, product, extensions }: IProps) {
                         </Select>
                     } else if (setting.type === "text") {
                         return <Textarea key={setting.name} label={setting.display_name} helperText={setting.description} placeholder={setting.placeholder} value={product.settings[setting.name] || ""} onChange={v => onSettingChange(setting.name, v, false)}></Textarea>
+                    } else if (setting.type === "servers") {
+                        return <MultiSelect
+                            key={setting.name}
+                            values={servers.map(s => { return { display_name: s.label, value: s.id.toString() } })}
+                            selected={product.settings[setting.name] ? product.settings[setting.name].split(",") : []}
+                            onChange={(v) => onSettingChange(setting.name, v.join(","), false)}
+                            label="Servers"
+                            helperText="A random server will be chosen during automatic provision.">
+                        </MultiSelect>
+                    } else {
+                        return <div key={setting.name}></div>
                     }
                 })
             }
