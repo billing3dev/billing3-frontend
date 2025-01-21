@@ -20,7 +20,7 @@ import CategoryAdd from './pages/admin/category/CategoryAdd'
 import AdminProductList from './pages/admin/product/ProductList'
 import ProductAdd from './pages/admin/product/ProductAdd'
 import ProductEdit from './pages/admin/product/ProductEdit'
-import InvoiceList from './pages/admin/invoice/InvoiceList'
+import AdminInvoiceList from './pages/admin/invoice/InvoiceList'
 import ProductList from './pages/store/ProductList'
 import Order from './pages/store/Order'
 import InoivceEdit from './pages/admin/invoice/InvoiceEdit'
@@ -29,6 +29,9 @@ import { ServerAdd } from './pages/admin/server/ServerAdd'
 import { ServerEdit } from './pages/admin/server/ServerEdit'
 import { GatewayEdit } from './pages/admin/gateway/GatewayEdit'
 import GatewayList from './pages/admin/gateway/GatewayList'
+import InvoiceList from './pages/invoice/InvoiceList'
+import Dashboard from './pages/Dashboard'
+import InvoiceView from './pages/invoice/InvoiceView'
 
 function App() {
     const [user, setUser] = useState<Me | null>(null);
@@ -64,6 +67,12 @@ function App() {
                             <Route path='product/:id' element={<Order></Order>}></Route>
                         </Route>
 
+                        <Route path='dashboard'>
+                            <Route index element={<Dashboard />}></Route>
+                            <Route path='invoice' element={<InvoiceList />}></Route>
+                            <Route path='invoice/:id' element={<InvoiceView />}></Route>
+                        </Route>
+
                         <Route path='admin'>
                             <Route index element={<Admin />}></Route>
 
@@ -79,7 +88,7 @@ function App() {
                             <Route path='product/add' element={<ProductAdd />}></Route>
                             <Route path='product/:id' element={<ProductEdit />}></Route>
 
-                            <Route path='invoice' element={<InvoiceList />}></Route>
+                            <Route path='invoice' element={<AdminInvoiceList />}></Route>
                             <Route path='invoice/:id' element={<InoivceEdit />}></Route>
 
                             <Route path='server' element={<ServerList></ServerList>}></Route>

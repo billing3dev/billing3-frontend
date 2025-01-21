@@ -79,6 +79,6 @@ export default function UserList() {
             </Tbody>
         </Table>
 
-        <Pagination page={page} total_pages={totalPages} onChange={setPage} className="mt-5"></Pagination>
+        <Pagination page={page} totalPages={totalPages} onChange={setPage} className="mt-5"></Pagination>
     </>
 }

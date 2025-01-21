@@ -5,6 +5,7 @@ export interface Me {
     email: string
     name: string
     role: "admin" | "user"
+    address: string
 }
 
 export async function me(): Promise<Me> {

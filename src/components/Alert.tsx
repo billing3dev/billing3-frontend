@@ -8,7 +8,7 @@ interface IProps {
 export default function Alert({ severity, children }: IProps) {
     const colors = {
         "info": {
-            bg: "bg-slate-500",
+            bg: "bg-gray-500",
             text: "text-white"
         },
         "warning": {

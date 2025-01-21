@@ -85,6 +85,6 @@ export default function InvoiceList() {
             </Tbody>
         </Table>
 
-        <Pagination className="mt-5" page={page} total_pages={totalPages} onChange={p => setPage(p)}></Pagination>
+        <Pagination className="mt-5" page={page} totalPages={totalPages} onChange={p => setPage(p)}></Pagination>
     </>;
 }
