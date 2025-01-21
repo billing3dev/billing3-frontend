@@ -9,7 +9,7 @@ export default function Admin() {
         ["/admin/invoice", "Invoices", "receipt"],
         ["/admin/service", "Services", "deployed_code"],
         ["/admin/server", "Servers", "dns"],
-        ["/admin/users", "Payment gateways", "credit_card"],
+        ["/admin/gateway", "Payment gateways", "credit_card"],
     ]
     return <>
         <h1 className="font-bold text-3xl mb-3">Admin dashboard</h1>
