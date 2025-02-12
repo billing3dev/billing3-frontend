@@ -84,24 +84,25 @@ export default function Extension({ onChange, product, extensions }: IProps) {
 
             {
                 productSettings.map((setting) => {
+                    const label = `[${setting.name}] ${setting.display_name}`;
                     if (setting.type === "string") {
-                        return <Input key={setting.name} label={setting.display_name} helperText={setting.description} placeholder={setting.placeholder} value={product.settings[setting.name] || ""} onChange={v => onSettingChange(setting.name, v, false)}></Input>
+                        return <Input key={setting.name} label={label} helperText={setting.description} placeholder={setting.placeholder} value={product.settings[setting.name] || ""} onChange={v => onSettingChange(setting.name, v, false)}></Input>
                     } else if (setting.type === "select") {
-                        return <Select key={setting.name} label={setting.display_name} helperText={setting.description} value={product.settings[setting.name] || ""} onChange={v => onSettingChange(setting.name, v, true)}>
+                        return <Select key={setting.name} label={label} helperText={setting.description} value={product.settings[setting.name] || ""} onChange={v => onSettingChange(setting.name, v, true)}>
                             <option value="">-- Please Select --</option>
                             {
                                 setting.values.map((v) => <option key={v} value={v}>{v}</option>)
                             }
                         </Select>
                     } else if (setting.type === "text") {
-                        return <Textarea key={setting.name} label={setting.display_name} helperText={setting.description} placeholder={setting.placeholder} value={product.settings[setting.name] || ""} onChange={v => onSettingChange(setting.name, v, false)}></Textarea>
+                        return <Textarea key={setting.name} label={label} helperText={setting.description} placeholder={setting.placeholder} value={product.settings[setting.name] || ""} onChange={v => onSettingChange(setting.name, v, false)}></Textarea>
                     } else if (setting.type === "servers") {
                         return <MultiSelect
                             key={setting.name}
                             values={servers.map(s => { return { display_name: s.label, value: s.id.toString() } })}
                             selected={product.settings[setting.name] ? product.settings[setting.name].split(",") : []}
                             onChange={(v) => onSettingChange(setting.name, v.join(","), false)}
-                            label="Servers"
+                            label={label}
                             helperText="A random server will be chosen during automatic provision.">
                         </MultiSelect>
                     } else {
