@@ -58,5 +58,13 @@ export async function getInvoices(id: number): Promise<Invoice[]> {
 }
 
 export async function getActionStatus(id: number): Promise<ActionStatus> {
-    return (await client.get(`/admin/service/${id}/action`)).data
+    return (await client.get(`/admin/service/${id}/action-status`)).data
+}
+
+export async function getAdminActions(id: number): Promise<string[]> {
+    return (await client.get(`/admin/service/${id}/action`)).data.actions;
+}
+
+export async function updateServiceSettings(id: number, settings: Record<string, string>): Promise<void> {
+    await client.put(`/admin/service/${id}/settings`, { ...settings })
 }
