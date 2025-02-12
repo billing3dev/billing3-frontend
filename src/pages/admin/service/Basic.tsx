@@ -82,6 +82,13 @@ export default function Basic({ id }: { id: number }) {
             .finally(() => setLoading(false));
     }
 
+    function onCancellationReasonChnage(s: string) {
+        if (!service) return;
+        const cloned = cloneDeep(service);
+        service.cancellation_reason = s === "" ? null : s;
+        setService(cloned);
+    }
+
     return <>
         <LoadingError loading={loading} error={error} />
 
@@ -101,6 +108,7 @@ export default function Basic({ id }: { id: number }) {
                     <Input label="Price" value={service.price} onChange={onPriceChange}></Input>
                     <Datetime label="Expires at" value={service.expires_at} onChange={onExpiresAtChange}></Datetime>
                     <Input label="User" value={"#" + service.user_id + " " + service.name} readOnly></Input>
+                    <Input label="Cancellation reason" value={service.cancellation_reason || ""} onChange={onCancellationReasonChnage}></Input>
                     <div><Button onClick={onUpdate}>Save</Button></div>
                 </Stack>
             </Card>
