@@ -11,6 +11,8 @@ import Tr from "../components/Tr"
 import Th from "../components/Th"
 import Tbody from "../components/Tbody"
 import Td from "../components/Td"
+import { getServices, Service } from "../api/service"
+import Status from "../components/Status"
 
 
 
@@ -18,15 +20,23 @@ export default function Dashboard() {
     const { user } = useContext(UserContext)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string>("")
-    const [invoices, setInvoices] = useState<Invoice[]>([])
+    const [invoices, setInvoices] = useState<Invoice[]>([]);
+    const [services, setServices] = useState<Service[]>([]);
 
     useEffect(() => {
         setLoading(false)
         setError("")
+        setServices([])
+        setInvoices([])
         getInvoices(1)
-            .then(i => setInvoices(i.invoices.slice(0, 5)))
+            .then(i => {
+                setInvoices(i.invoices.slice(0, 5))
+                return getServices()
+            })
+            .then(s => setServices(s.slice(0, 5)))
             .catch(e => setError(e.message))
             .finally(() => setLoading(false))
+
     }, [])
 
     if (!user) {
@@ -63,7 +73,29 @@ export default function Dashboard() {
 
             <div className="col-span-12 lg:col-span-9">
                 <Card title="Services" className="">
-                    <span>TODO</span>
+                    <Link to="/store" className="mb-2"><Button>Order a new service</Button></Link>
+                    {(services.length === 0 && !loading) && <div>No service found</div>}
+                    {services.length > 0 && <>
+                        <Table>
+                            <Thead>
+                                <Tr>
+                                    <Th>#</Th>
+                                    <Th>Status</Th>
+                                    <Th>Label</Th>
+                                    <Th>Expires at</Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                {services.map(s => <Tr key={s.id}>
+                                    <Td><Link className="underline text-primary" to={"/dashboard/service/" + s.id}>{s.id}</Link></Td>
+                                    <Td><Status status={s.status}></Status></Td>
+                                    <Td>{s.label}</Td>
+                                    <Td>{new Date(s.expires_at * 1000).toLocaleString()}</Td>
+                                </Tr>)}
+                            </Tbody>
+                        </Table>
+                        <Link to="/dashboard/service"><Button className="mt-2">View all</Button></Link>
+                    </>}
                 </Card>
 
                 <Card title="Invoices" className="mt-3">
@@ -81,7 +113,7 @@ export default function Dashboard() {
                             <Tbody>
                                 {invoices.map(i => <Tr key={i.id}>
                                     <Td><Link className="underline text-primary" to={"/dashboard/invoice/" + i.id}>{i.id}</Link></Td>
-                                    <Td>{i.status}</Td>
+                                    <Td><Status status={i.status}></Status></Td>
                                     <Td>${i.amount}</Td>
                                     <Td>{new Date(i.due_at * 1000).toLocaleString()}</Td>
                                 </Tr>)}

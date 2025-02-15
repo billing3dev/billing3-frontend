@@ -32,8 +32,10 @@ import GatewayList from './pages/admin/gateway/GatewayList'
 import InvoiceList from './pages/invoice/InvoiceList'
 import Dashboard from './pages/Dashboard'
 import InvoiceView from './pages/invoice/InvoiceView'
-import ServiceList from './pages/admin/service/ServiceList'
-import ServiceView from './pages/admin/service/ServiceView'
+import AdminServiceList from './pages/admin/service/ServiceList'
+import AdminServiceView from './pages/admin/service/ServiceView'
+import ServiceList from './pages/service/ServiceList'
+import ServiceView from './pages/service/ServiceView'
 
 function App() {
     const [user, setUser] = useState<Me | null>(null);
@@ -71,8 +73,12 @@ function App() {
 
                         <Route path='dashboard'>
                             <Route index element={<Dashboard />}></Route>
+
                             <Route path='invoice' element={<InvoiceList />}></Route>
                             <Route path='invoice/:id' element={<InvoiceView />}></Route>
+
+                            <Route path='service' element={<ServiceList />}></Route>
+                            <Route path='service/:id' element={<ServiceView />}></Route>
                         </Route>
 
                         <Route path='admin'>
@@ -100,8 +106,8 @@ function App() {
                             <Route path='gateway' element={<GatewayList></GatewayList>}></Route>
                             <Route path='gateway/:id' element={<GatewayEdit />}></Route>
 
-                            <Route path='service' element={<ServiceList />}></Route>
-                            <Route path='service/:id' element={<ServiceView />}></Route>
+                            <Route path='service' element={<AdminServiceList />}></Route>
+                            <Route path='service/:id' element={<AdminServiceView />}></Route>
                         </Route>
                     </Route>
 

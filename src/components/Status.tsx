@@ -8,7 +8,7 @@ export default function Status({ status, large }: { status: string, large?: bool
         case "CANCELLED": color = "bg-gray-500"; break;
         case "ACTIVE": color = "bg-green-500"; break;
         case "SUSPENDED": color = "bg-red-500"; break;
-        case "PENDING": color = "bg-gray-500"; break;
+        case "PENDING": color = "bg-orange-500"; break;
     }
     let size = "";
     if (large === true) size = "text-xl font-bold";
