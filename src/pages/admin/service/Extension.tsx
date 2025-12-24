@@ -43,6 +43,6 @@ export default function Extension({ id }: { id: number }) {
             {actions.map(a => <Button key={a} onClick={() => onClick(a)}>{a.toUpperCase()}</Button>)}
         </div>
 
-        <iframe src={iframeSrc} className="h-[60vh] w-full mt-3 bg-white select-none" sandbox="allow-forms allow-scripts" referrerPolicy="no-referrer"></iframe>
+        <iframe src={iframeSrc} className="h-[60vh] w-full mt-3 bg-white select-none"></iframe>
     </>
 }

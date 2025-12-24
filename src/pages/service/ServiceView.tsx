@@ -115,7 +115,7 @@ export default function ServiceView() {
                     <div className="flex gap-1 flex-wrap">
                         {actions.map(a => <Button onClick={() => doAction(a)} key={a}>{a.toUpperCase()}</Button>)}
                     </div>
-                    <iframe src={iframeSrc} className="h-[60vh] w-full mt-3 bg-white select-none" sandbox="allow-forms allow-scripts" referrerPolicy="no-referrer"></iframe>
+                    <iframe src={iframeSrc} className="h-[60vh] w-full mt-3 bg-white select-none"></iframe>
                 </Card>
 
                 <Card className="mt-3" title="Service Jobs">
