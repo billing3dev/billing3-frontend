@@ -8,7 +8,7 @@ import Stack from "../../components/Stack";
 import { cloneDeep, debounce } from "lodash";
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
-
+import Markdown from 'react-markdown'
 
 
 export default function Order() {
@@ -112,7 +112,7 @@ export default function Order() {
         {product && <>
             <h1 className="text-3xl font-bold">{product.name}</h1>
 
-            {product.description && <Card className="mt-3">{product.description}</Card>}
+            {product.description && <Card className="mt-3"><Markdown>{product.description}</Markdown></Card>}
 
             <div className="mt-3 grid grid-cols-12 gap-3">
 

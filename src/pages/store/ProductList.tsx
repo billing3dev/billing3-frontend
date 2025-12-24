@@ -4,6 +4,7 @@ import Card from "../../components/Card";
 import Button from "../../components/Button";
 import { Link, useParams } from "react-router";
 import LoadingError from "../../components/LoadingError";
+import Markdown from 'react-markdown'
 
 
 export default function ProductList() {
@@ -37,7 +38,7 @@ export default function ProductList() {
 
                 <h1 className="text-3xl font-bold">{category.name}</h1>
 
-                {category.description && <Card className="mt-5">{category.description}</Card>}
+                {category.description && <Card className="mt-5"><Markdown>{category.description}</Markdown></Card>}
 
             </>
         }
@@ -46,7 +47,7 @@ export default function ProductList() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-5 gap-2">
             {
                 products.map(p => <Card key={p.id} title={p.name}>
-                    <p className="mb-3">{p.description}</p>
+                    <div className="mb-3"><Markdown>{p.description}</Markdown></div>
                     <Link to={`/store/product/${p.id}`}><Button variant="outlined">Order</Button></Link>
                 </Card>)
             }

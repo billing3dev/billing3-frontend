@@ -65,13 +65,22 @@ export default function InvoiceView() {
         {invoice && <>
             <div className="mt-3">
                 <Status status={invoice.status} large></Status>
+
             </div>
+            
+            {invoice.status === "UNPAID" && <div className="mt-3 flex justify-start gap-2">
+                <Select value={gateway} onChange={e => setGateway(e)}>
+                    {gateways.map((gateway) => <option key={gateway.name} value={gateway.name}>{gateway.display_name}</option>)}
+                </Select>
+                <Button onClick={onClick}>Pay now</Button>
+            </div>}
+
+
+            
 
             {(invoice.cancellation_reason && invoice.status === "CANCELLED") && <div className="mt-3">
                 <Alert severity="info">Cancellation reason: {invoice.cancellation_reason}</Alert>
             </div>}
-
-            <h2 className="text-2xl mt-3">Basic</h2>
 
             <div className="mt-3 flex flex-col gap-1">
                 <span><strong>Due at</strong></span>
@@ -84,14 +93,7 @@ export default function InvoiceView() {
                 </>}
             </div>
 
-            {invoice.status === "UNPAID" && <div className="mt-3 flex justify-start gap-2">
-                <Select value={gateway} onChange={e => setGateway(e)}>
-                    {gateways.map((gateway) => <option key={gateway.name} value={gateway.name}>{gateway.display_name}</option>)}
-                </Select>
-                <Button onClick={onClick}>Pay now</Button>
-            </div>}
 
-            <h2 className="text-2xl mt-3">Items</h2>
 
             <Table className="mt-3">
                 <Thead>
