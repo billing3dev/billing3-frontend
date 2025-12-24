@@ -8,6 +8,7 @@ import Input from "../../../components/Input"
 import Textarea from "../../../components/Textarea"
 import MultiSelect from "../../../components/MultiSelect"
 import { getServers, Server } from "../../../api/admin-server"
+import { Link } from "react-router"
 
 interface IProps {
     onChange: (product: ProductEdit) => void
@@ -16,7 +17,6 @@ interface IProps {
 }
 
 export default function Extension({ onChange, product, extensions }: IProps) {
-    const [loaded, setLoaded] = useState(false);
     const [productSettings, setProductSettings] = useState<ProductSetting[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string>("");
@@ -33,14 +33,12 @@ export default function Extension({ onChange, product, extensions }: IProps) {
     }, [])
 
     useEffect(() => {
-        if (loaded) return;
-        setLoaded(true);
 
         apiGetProductSettings(product.extension, product.settings)
                 .then(d => setProductSettings(d))
                 .catch(e => setError(e.message))
                 .finally(() => setLoading(false));
-    }, [loaded, product])
+    }, [product])
 
     function onExtensionChange(v: string) {
         const cloned = cloneDeep(product);
@@ -73,7 +71,7 @@ export default function Extension({ onChange, product, extensions }: IProps) {
 
         <LoadingError loading={loading} error={error} />
 
-        <Stack>
+        {!loading && <Stack>
 
 
             <Select label="Extension" value={product.extension} onChange={onExtensionChange}>
@@ -97,6 +95,11 @@ export default function Extension({ onChange, product, extensions }: IProps) {
                     } else if (setting.type === "text") {
                         return <Textarea key={setting.name} label={label} helperText={setting.description} placeholder={setting.placeholder} value={product.settings[setting.name] || ""} onChange={v => onSettingChange(setting.name, v, false)}></Textarea>
                     } else if (setting.type === "servers") {
+                        if (servers.length === 0) {
+                            return <div key={setting.name}>
+                                No servers found. <Link to="/admin/server">Create servers</Link>
+                            </div>
+                        }
                         return <MultiSelect
                             key={setting.name}
                             values={servers.map(s => { return { display_name: s.label, value: s.id.toString() } })}
@@ -111,6 +114,6 @@ export default function Extension({ onChange, product, extensions }: IProps) {
                 })
             }
 
-        </Stack>
+        </Stack>}
     </>
 }

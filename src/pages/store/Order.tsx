@@ -9,6 +9,8 @@ import { cloneDeep, debounce } from "lodash";
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
 import Markdown from 'react-markdown'
+import Input from "../../components/Input";
+import Textarea from "../../components/Textarea";
 
 
 export default function Order() {
@@ -138,6 +140,18 @@ export default function Order() {
                                                 o.values.map(v => <option key={v.value} value={v.value}>{v.display_name}</option>)
                                             }
                                         </Select>
+                                    }
+                                    if (o.type === "text") {
+                                        return <Input key={o.name} label={o.display_name} value={inputs[o.name] || ""} onChange={e => onOptionChange(o.name, e)}></Input>
+                                    }
+                                    if (o.type === "textarea") {
+                                        return <Textarea key={o.name} label={o.display_name} value={inputs[o.name] || ""} onChange={e => onOptionChange(o.name, e)}></Textarea>
+                                    }
+                                    if (o.type === "password") {
+                                        if (!inputs[o.name]) {
+                                            onOptionChange(o.name, Array.from(crypto.getRandomValues(new Uint8Array(8))).map(b => b.toString(16).padStart(2, '0')).join(''));
+                                        }
+                                        return <Input key={o.name} label={o.display_name} value={inputs[o.name] || ""} onChange={e => onOptionChange(o.name, e)}></Input>
                                     }
 
                                     return <></>
