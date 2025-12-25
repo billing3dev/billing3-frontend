@@ -30,3 +30,13 @@ export async function login(email: string, password: string): Promise<string> {
 export async function updateProfile(user: Omit<Me, "email" | "name" | "role" | "full_address">): Promise<void> {
     await client.put("/auth/profile", user)
 }
+
+export async function register(email: string): Promise<void> {
+    await client.post("/auth/register", { email })
+}
+
+export async function register2(name: string, password: string, token: string): Promise<string> {
+    return (await client.post("/auth/register2", {
+        name, password, token
+    })).data.token
+}
