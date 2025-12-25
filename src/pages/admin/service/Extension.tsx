@@ -4,17 +4,17 @@ import Button from "../../../components/Button";
 import Alert from "../../../components/Alert";
 import LoadingError from "../../../components/LoadingError";
 
-
+const LOADING_HTML = "data:text/html;base64,PGRpdiBjbGFzcz0ibG9hZGVyIj48L2Rpdj4KPHN0eWxlPgoubG9hZGVyIHsKICBib3JkZXI6IDEzcHggc29saWQgI2YzZjNmMzsKICBib3JkZXItdG9wOiAxM3B4IHNvbGlkICMzNDk4ZGI7CiAgYm9yZGVyLXJhZGl1czogNTAlOwogIHdpZHRoOiA2MHB4OwogIGhlaWdodDogNjBweDsKICBhbmltYXRpb246IHNwaW4gMnMgbGluZWFyIGluZmluaXRlOwogIG1hcmdpbjogMjBweDsKfQpAa2V5ZnJhbWVzIHNwaW4gewogIDAlIHsgdHJhbnNmb3JtOiByb3RhdGUoMGRlZyk7IH0KICAxMDAlIHsgdHJhbnNmb3JtOiByb3RhdGUoMzYwZGVnKTsgfQp9CmJvZHkgewogIGJhY2tncm91bmQtY29sb3I6ICMxMTEzMTg7Cn0KPC9zdHlsZT4=";
 
 export default function Extension({ id }: { id: number }) {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [actions, setActions] = useState<string[]>([]);
     const [success, setSuccess] = useState("");
-    const [iframeSrc, setIframeSrc] = useState("about:blank");
+    const [iframeSrc, setIframeSrc] = useState(LOADING_HTML);
 
     useEffect(() => {
-        setIframeSrc("about:blank");
+        setIframeSrc(LOADING_HTML);
         setLoading(true);
         setError("");
         setActions([]);

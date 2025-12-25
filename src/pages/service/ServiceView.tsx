@@ -13,6 +13,8 @@ import Td from "../../components/Td";
 import Th from "../../components/Th";
 import Tr from "../../components/Tr";
 
+const LOADING_HTML = "data:text/html;base64,PGRpdiBjbGFzcz0ibG9hZGVyIj48L2Rpdj4KPHN0eWxlPgoubG9hZGVyIHsKICBib3JkZXI6IDEzcHggc29saWQgI2YzZjNmMzsKICBib3JkZXItdG9wOiAxM3B4IHNvbGlkICMzNDk4ZGI7CiAgYm9yZGVyLXJhZGl1czogNTAlOwogIHdpZHRoOiA2MHB4OwogIGhlaWdodDogNjBweDsKICBhbmltYXRpb246IHNwaW4gMnMgbGluZWFyIGluZmluaXRlOwogIG1hcmdpbjogMjBweDsKfQpAa2V5ZnJhbWVzIHNwaW4gewogIDAlIHsgdHJhbnNmb3JtOiByb3RhdGUoMGRlZyk7IH0KICAxMDAlIHsgdHJhbnNmb3JtOiByb3RhdGUoMzYwZGVnKTsgfQp9CmJvZHkgewogIGJhY2tncm91bmQtY29sb3I6ICMxMTEzMTg7Cn0KPC9zdHlsZT4=";
+
 
 export default function ServiceView() {
     const { id } = useParams<{ id: string }>();
@@ -20,12 +22,12 @@ export default function ServiceView() {
     const [error, setError] = useState<string>("");
     const [service, setSerivce] = useState<Service | null>(null);
     const [actions, setActions] = useState<string[]>([]);
-    const [iframeSrc, setIframeSrc] = useState<string>("about:blank");  
+    const [iframeSrc, setIframeSrc] = useState<string>(LOADING_HTML);  
     const [success, setSuccess] = useState<string>("");
     const [jobs, setJobs] = useState<ServiceJob[]>([]);
 
     useEffect(() => {
-        setIframeSrc("about:blank");
+        setIframeSrc(LOADING_HTML);
         setLoading(true);
         setError("");
         setSerivce(null);
