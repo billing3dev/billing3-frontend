@@ -67,11 +67,11 @@ export default function Basic({ onChange, product, categories }: IProps) {
                 <option value="false">No</option>
             </Select>
             <Select label="Stock Control" value={product.stock_control.toString()} onChange={onStockControlChange}>
-                <option value="1">Yes</option>
-                <option value="2">No</option>
+                <option value="1">No</option>
+                <option value="2">Yes</option>
             </Select>
             {
-                product.stock_control === 1 && <Input label="Stock" value={product.stock.toString()} onChange={onStockChange}></Input>
+                product.stock_control === 2 && <Input label="Stock" value={product.stock.toString()} onChange={onStockChange}></Input>
             }
         </Stack>
     </>
