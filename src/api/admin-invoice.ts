@@ -38,7 +38,7 @@ export type InvoiceWithUsername = Invoice & {username: string}
 export type InvioceEdit = Omit<Invoice, "id" | "user_id" | "amount" | "created_at">
 
 export async function searchInvoices(status: string, user_id: number, page: number): Promise<{invoices: Invoice[], total_pages: number}> {
-    return (await client.get("/admin/invoice", {params: {status, user_id, page}})).data
+    return (await client.get("/admin/invoice", {params: {status, user: user_id, page}})).data
 }
 
 export async function getInvoice(id: number): Promise<{invoice: InvoiceWithUsername, items: Item[]}> {
