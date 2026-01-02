@@ -7,6 +7,7 @@ import LoadingError from "../components/LoadingError";
 import { resetPassword } from "../api/auth";
 import { UserContext } from "../components/UserContext";
 import Alert from "../components/Alert";
+import Turnstile from "../components/Turnstile";
 
 export default function ResetPassword() {
     const { user } = useContext(UserContext);
@@ -14,12 +15,13 @@ export default function ResetPassword() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
+    const [turnstile, setTurnstile] = useState("");
 
     function onSubmit() {
         setLoading(true);
         setError("");
         setSuccess(false);
-        resetPassword(email)
+        resetPassword(email, turnstile)
             .then(() => {
                 setSuccess(true);
             })
@@ -43,6 +45,8 @@ export default function ResetPassword() {
             <LoadingError loading={loading} error={error}></LoadingError>
 
             <Input label="Email" value={email} onChange={e => setEmail(e)}></Input>
+
+            <Turnstile onSuccess={setTurnstile}></Turnstile>
 
             <Button disabled={loading} onClick={onSubmit}>Send email</Button>
             

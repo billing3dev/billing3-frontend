@@ -11,6 +11,7 @@ import Loading from "../../components/Loading";
 import Markdown from 'react-markdown'
 import Input from "../../components/Input";
 import Textarea from "../../components/Textarea";
+import Turnstile from "../../components/Turnstile";
 
 
 export default function Order() {
@@ -24,6 +25,7 @@ export default function Order() {
     const [billingCycle, setBillingCycle] = useState(0);
     const [pricing, setPricing] = useState<Pricing | null>(null);
     const [loadingPrice, setLoadingPrice] = useState(false);
+    const [turnstileResp, setTurnstileResp] = useState<string>("");
 
     useEffect(() => {
         setOptions([]);
@@ -103,7 +105,7 @@ export default function Order() {
             product_id: parseInt(id!),
             duration: billingCycle,
             options: inputs
-        })
+        }, turnstileResp)
             .then((i) => navigate("/dashboard/invoice/" + i))
             .catch(e => setError(e.message))
             .finally(() => setLoading(false));
@@ -149,7 +151,7 @@ export default function Order() {
                                     }
                                     if (o.type === "password") {
                                         if (!inputs[o.name]) {
-                                            onOptionChange(o.name, Array.from(crypto.getRandomValues(new Uint8Array(8))).map(b => b.toString(16).padStart(2, '0')).join(''));
+                                            onOptionChange(o.name, Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b => b.toString(16).padStart(2, '0')).join(''));
                                         }
                                         return <Input key={o.name} label={o.display_name} value={inputs[o.name] || ""} onChange={e => onOptionChange(o.name, e)}></Input>
                                     }
@@ -197,6 +199,12 @@ export default function Order() {
                         }
 
                     </Card>
+
+
+
+                    <Turnstile onSuccess={setTurnstileResp}></Turnstile>
+
+
                     <Button className="mt-3" onClick={onSubmit} disabled={loading || loadingPrice}>Place Order</Button>
                 </div>
             </div>

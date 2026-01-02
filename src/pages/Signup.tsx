@@ -7,6 +7,7 @@ import LoadingError from "../components/LoadingError";
 import { register } from "../api/auth";
 import { UserContext } from "../components/UserContext";
 import Alert from "../components/Alert";
+import Turnstile from "../components/Turnstile";
 
 export default function Signup() {
     const navigate = useNavigate();
@@ -15,12 +16,13 @@ export default function Signup() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
+    const [turnstile, setTurnstile] = useState("");
 
     function onSubmit() {
         setLoading(true);
         setError("");
         setSuccess(false);
-        register(email)
+        register(email, turnstile)
             .then(() => {
                 setSuccess(true);
             })
@@ -48,6 +50,8 @@ export default function Signup() {
             <LoadingError loading={loading} error={error}></LoadingError>
 
             <Input label="Email" value={email} onChange={e => setEmail(e)}></Input>
+
+            <Turnstile onSuccess={setTurnstile}></Turnstile>
 
             <Button disabled={loading} onClick={onSubmit}>Send email</Button>
             

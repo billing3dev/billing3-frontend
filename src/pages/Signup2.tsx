@@ -6,6 +6,7 @@ import { useNavigate, useSearchParams } from "react-router";
 import LoadingError from "../components/LoadingError";
 import { me, register2 } from "../api/auth";
 import { UserContext } from "../components/UserContext";
+import Turnstile from "../components/Turnstile";
 
 export default function Signup2() {
     const { user, setUser } = useContext(UserContext);
@@ -17,11 +18,12 @@ export default function Signup2() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [turnstile, setTurnstile] = useState("");
 
     function onSubmit() {
         setLoading(true);
         setError("");
-        register2(name, password, token)
+        register2(name, password, token, turnstile)
             .then(t => {
                 localStorage.setItem("token", t);
                 document.cookie = `token=${t}; path=/; max-age=31536000`;
@@ -73,6 +75,8 @@ export default function Signup2() {
             <Input label="Name" value={name} onChange={e => setName(e)}></Input>
 
             <Input label="Password" type="password" value={password} onChange={e => setPassword(e)}></Input>
+
+            <Turnstile onSuccess={setTurnstile}></Turnstile>
 
             <Button disabled={loading} onClick={onSubmit}>Sign up</Button>
             

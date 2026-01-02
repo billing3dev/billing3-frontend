@@ -97,8 +97,12 @@ export async function calculatePrice(req: OrderRequest): Promise<Pricing> {
 /**
  * @returns invoice id
  */
-export async function createOrder(req: OrderRequest): Promise<number> {
-    return (await client.post("/store/order", req)).data.invoice
+export async function createOrder(req: OrderRequest, tursntile: string): Promise<number> {
+    return (await client.post("/store/order", req, {
+        headers: {
+            "X-Turnstile": tursntile
+        }
+    })).data.invoice
 }
 
 export async function calculatePricing(req: OrderRequest): Promise<Pricing> {

@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import { useNavigate, useSearchParams } from "react-router";
 import LoadingError from "../components/LoadingError";
 import { resetPassword2 } from "../api/auth";
+import Turnstile from "../components/Turnstile";
 
 export default function ResetPassword2() {
     const [token, setToken] = useState("");
@@ -13,11 +14,12 @@ export default function ResetPassword2() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [turnstile, setTurnstile] = useState("");
 
     function onSubmit() {
         setLoading(true);
         setError("");
-        resetPassword2(password, token)
+        resetPassword2(password, token, turnstile)
             .then(() => {
                 navigate("/auth/signin");
             })
@@ -38,6 +40,8 @@ export default function ResetPassword2() {
             <LoadingError loading={loading} error={error}></LoadingError>
 
             <Input label="New password" type="password" value={password} onChange={e => setPassword(e)}></Input>
+
+            <Turnstile onSuccess={setTurnstile}></Turnstile>
 
             <Button disabled={loading} onClick={onSubmit}>Reset password</Button>
             

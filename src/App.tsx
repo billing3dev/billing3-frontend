@@ -42,14 +42,24 @@ import Signup from './pages/Signup'
 import Signup2 from './pages/Signup2'
 import ResetPassword from './pages/ResetPassword'
 import ResetPassword2 from './pages/ResetPassword2'
+import Settings from './pages/admin/settings/Settings'
+import { SettingsContext } from './components/SettingsContext'
+import { PublicSettings, getSettings } from './api/settings'
 
 function App() {
     const [user, setUser] = useState<Me | null>(null);
+    const [publicSettings, setPublicSettings] = useState<PublicSettings | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        me()
-            .then(u => setUser(u))
+        getSettings()
+            .then(s => {
+                setPublicSettings(s);
+                return me();
+            })
+            .then(u => {
+                setUser(u)
+            })
             .catch(e => console.error(e))
             .finally(() => setLoading(false));
     }, []);
@@ -62,71 +72,75 @@ function App() {
 
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path='*' element={<NotFound></NotFound>}></Route>
-                    <Route path='/' element={<BaseLayout />}>
-                        <Route index element={<Index />}></Route>
+        <SettingsContext.Provider value={{ settings: publicSettings, setSettings: setPublicSettings }}>
+            <UserContext.Provider value={{ user, setUser }}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path='*' element={<NotFound></NotFound>}></Route>
+                        <Route path='/' element={<BaseLayout />}>
+                            <Route index element={<Index />}></Route>
 
-                        <Route path='auth/signin' element={<Signin />}></Route>
-                        <Route path='auth/logout' element={<Logout />}></Route>
-                        <Route path='auth/signup' element={<Signup />}></Route>
-                        <Route path='auth/register2' element={<Signup2 />}></Route>
-                        <Route path='auth/reset-password' element={<ResetPassword />}></Route>
-                        <Route path='auth/reset-password2' element={<ResetPassword2 />}></Route>
+                            <Route path='auth/signin' element={<Signin />}></Route>
+                            <Route path='auth/logout' element={<Logout />}></Route>
+                            <Route path='auth/signup' element={<Signup />}></Route>
+                            <Route path='auth/register2' element={<Signup2 />}></Route>
+                            <Route path='auth/reset-password' element={<ResetPassword />}></Route>
+                            <Route path='auth/reset-password2' element={<ResetPassword2 />}></Route>
 
-                        <Route path="store">
-                            <Route index element={<CategoryList></CategoryList>}></Route>
-                            <Route path=':id' element={<ProductList></ProductList>}></Route>
-                            <Route path='product/:id' element={<Order></Order>}></Route>
+                            <Route path="store">
+                                <Route index element={<CategoryList></CategoryList>}></Route>
+                                <Route path=':id' element={<ProductList></ProductList>}></Route>
+                                <Route path='product/:id' element={<Order></Order>}></Route>
+                            </Route>
+
+                            <Route path='dashboard'>
+                                <Route index element={<Dashboard />}></Route>
+
+                                <Route path='invoice' element={<InvoiceList />}></Route>
+                                <Route path='invoice/:id' element={<InvoiceView />}></Route>
+
+                                <Route path='service' element={<ServiceList />}></Route>
+                                <Route path='service/:id' element={<ServiceView />}></Route>
+
+                                <Route path='profile' element={<Profile></Profile>}></Route>
+                            </Route>
+
+                            <Route path='admin'>
+                                <Route index element={<Admin />}></Route>
+
+                                <Route path='user' element={<UserList />}></Route>
+                                <Route path='user/:id' element={<UserView />}></Route>
+                                <Route path='user/:id/edit' element={<UserEdit />}></Route>
+
+                                <Route path='category' element={<AdminCategoryList />}></Route>
+                                <Route path='category/:id' element={<CategoryEdit />}></Route>
+                                <Route path='category/add' element={<CategoryAdd />}></Route>
+
+                                <Route path='product' element={<AdminProductList />}></Route>
+                                <Route path='product/add' element={<ProductAdd />}></Route>
+                                <Route path='product/:id' element={<ProductEdit />}></Route>
+
+                                <Route path='invoice' element={<AdminInvoiceList />}></Route>
+                                <Route path='invoice/:id' element={<InoivceEdit />}></Route>
+
+                                <Route path='server' element={<ServerList></ServerList>}></Route>
+                                <Route path='server/add' element={<ServerAdd />}></Route>
+                                <Route path='server/:id' element={<ServerEdit />}></Route>
+
+                                <Route path='gateway' element={<GatewayList></GatewayList>}></Route>
+                                <Route path='gateway/:id' element={<GatewayEdit />}></Route>
+
+                                <Route path='service' element={<AdminServiceList />}></Route>
+                                <Route path='service/:id' element={<AdminServiceView />}></Route>
+
+                                <Route path="settings" element={<Settings />}></Route>
+                            </Route>
                         </Route>
 
-                        <Route path='dashboard'>
-                            <Route index element={<Dashboard />}></Route>
-
-                            <Route path='invoice' element={<InvoiceList />}></Route>
-                            <Route path='invoice/:id' element={<InvoiceView />}></Route>
-
-                            <Route path='service' element={<ServiceList />}></Route>
-                            <Route path='service/:id' element={<ServiceView />}></Route>
-
-                            <Route path='profile' element={<Profile></Profile>}></Route>
-                        </Route>
-
-                        <Route path='admin'>
-                            <Route index element={<Admin />}></Route>
-
-                            <Route path='user' element={<UserList />}></Route>
-                            <Route path='user/:id' element={<UserView />}></Route>
-                            <Route path='user/:id/edit' element={<UserEdit />}></Route>
-
-                            <Route path='category' element={<AdminCategoryList />}></Route>
-                            <Route path='category/:id' element={<CategoryEdit />}></Route>
-                            <Route path='category/add' element={<CategoryAdd />}></Route>
-
-                            <Route path='product' element={<AdminProductList />}></Route>
-                            <Route path='product/add' element={<ProductAdd />}></Route>
-                            <Route path='product/:id' element={<ProductEdit />}></Route>
-
-                            <Route path='invoice' element={<AdminInvoiceList />}></Route>
-                            <Route path='invoice/:id' element={<InoivceEdit />}></Route>
-
-                            <Route path='server' element={<ServerList></ServerList>}></Route>
-                            <Route path='server/add' element={<ServerAdd />}></Route>
-                            <Route path='server/:id' element={<ServerEdit />}></Route>
-
-                            <Route path='gateway' element={<GatewayList></GatewayList>}></Route>
-                            <Route path='gateway/:id' element={<GatewayEdit />}></Route>
-
-                            <Route path='service' element={<AdminServiceList />}></Route>
-                            <Route path='service/:id' element={<AdminServiceView />}></Route>
-                        </Route>
-                    </Route>
-
-                </Routes>
-            </BrowserRouter>
-        </UserContext.Provider >
+                    </Routes>
+                </BrowserRouter>
+            </UserContext.Provider >
+        </SettingsContext.Provider>
     )
 }
 

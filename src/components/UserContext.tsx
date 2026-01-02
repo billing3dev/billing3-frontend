@@ -8,6 +8,3 @@ export const UserContext = createContext<{
     user: null,
     setUser: (_u) => { }
 })
-
-console.log("")
-console.log("") 

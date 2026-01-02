@@ -21,9 +21,13 @@ export async function logout(): Promise<Me> {
     return (await client.post("/auth/logout")).data
 }
 
-export async function login(email: string, password: string): Promise<string> {
+export async function login(email: string, password: string, turnstile: string): Promise<string> {
     return (await client.post("/auth/login", {
         email, password
+    }, {
+        headers: {
+            "X-Turnstile": turnstile
+        }
     })).data.token
 }
 
@@ -31,20 +35,36 @@ export async function updateProfile(user: Omit<Me, "email" | "name" | "role" | "
     await client.put("/auth/profile", user)
 }
 
-export async function register(email: string): Promise<void> {
-    await client.post("/auth/register", { email })
+export async function register(email: string, turnstile: string): Promise<void> {
+    await client.post("/auth/register", { email }, {
+        headers: {
+            "X-Turnstile": turnstile
+        }
+    })
 }
 
-export async function register2(name: string, password: string, token: string): Promise<string> {
+export async function register2(name: string, password: string, token: string, turnstile: string): Promise<string> {
     return (await client.post("/auth/register2", {
         name, password, token
+    }, {
+        headers: {
+            "X-Turnstile": turnstile
+        }
     })).data.token
 }
 
-export async function resetPassword(email: string): Promise<void> {
-    await client.post("/auth/reset-password", { email })
+export async function resetPassword(email: string, turnstile: string): Promise<void> {
+    await client.post("/auth/reset-password", { email }, {
+        headers: {
+            "X-Turnstile": turnstile
+        }
+    })
 }
 
-export async function resetPassword2(password: string, token: string): Promise<void> {
-    await client.post("/auth/reset-password2", { password, token })
+export async function resetPassword2(password: string, token: string, turnstile: string): Promise<void> {
+    await client.post("/auth/reset-password2", { password, token }, {
+        headers: {
+            "X-Turnstile": turnstile
+        }
+    })
 }

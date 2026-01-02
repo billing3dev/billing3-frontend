@@ -10,6 +10,7 @@ export default function Admin() {
         ["/admin/service", "Services", "deployed_code"],
         ["/admin/server", "Servers", "dns"],
         ["/admin/gateway", "Payment gateways", "credit_card"],
+        ["/admin/settings", "Settings", "settings"],
     ]
     return <>
         <h1 className="font-bold text-3xl mb-3">Admin dashboard</h1>

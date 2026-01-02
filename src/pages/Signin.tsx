@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router";
 import LoadingError from "../components/LoadingError";
 import { login, me } from "../api/auth";
 import { UserContext } from "../components/UserContext";
+import Turnstile from "../components/Turnstile";
 
 export default function Signin() {
     const navigate = useNavigate();
@@ -14,11 +15,12 @@ export default function Signin() {
     const [password, setPasswrod] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [turnstile, setTurnstile] = useState("");
 
     function onSubmit() {
         setLoading(true);
         setError("");
-        login(email, password)
+        login(email, password, turnstile)
             .then(t => {
                 localStorage.setItem("token", t);
                 document.cookie = `token=${t}; path=/; max-age=31536000`;
@@ -52,6 +54,8 @@ export default function Signin() {
             <Input label="Email" value={email} onChange={e => setEmail(e)}></Input>
             <Input label="Password" type="password" value={password} onChange={e => setPasswrod(e)}></Input>
             <Link to="/auth/reset-password" className="text-primary underline">Forget password</Link>
+
+            <Turnstile onSuccess={setTurnstile}></Turnstile>
 
             <Button disabled={loading} onClick={onSubmit}>Sign in</Button>
             

@@ -2,10 +2,12 @@ import { useContext, useState } from "react"
 import Button from "./Button"
 import { Link } from "react-router";
 import { UserContext } from "./UserContext";
+import { SettingsContext } from "./SettingsContext";
 
 export default function Navbar() {
     const [show, setShow] = useState(false);
     const { user } = useContext(UserContext);
+    const { settings } = useContext(SettingsContext);
 
     let links = [
         { title: "Home", link: "/" },
@@ -21,7 +23,7 @@ export default function Navbar() {
     return <>
         <div className="w-full px-3 border-outline border-b">
             <div className="container flex items-center h-16 gap-3 mx-auto">
-                <h1 className="text-xl font-bold">Billing3</h1>
+                <h1 className="text-xl font-bold">{settings?.site_name || "Billing3"}</h1>
 
                 <nav className="hidden md:block">
                     <ul className="flex gap-3">
